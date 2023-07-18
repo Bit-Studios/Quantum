@@ -35,7 +35,7 @@ public class PatchLoader
 {
     [HarmonyPatch(typeof(KSP2Mod))]
     [HarmonyPatch("Load")]
-    [HarmonyPrefix]
+    [HarmonyPostfix]
     public static bool KSP2Mod_Load(KSP2Mod __instance, ref bool __result)
     {
         __result = true;

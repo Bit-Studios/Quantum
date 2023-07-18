@@ -7,11 +7,11 @@ using KSP.Game;
 using System.Reflection;
 
 namespace Quantum;
-[BepInPlugin("com.shadow.quantum", "Quantum", "0.0.1")]
+[BepInPlugin("com.shadow.quantum", "Quantum", "0.0.3")]
 public class QuantumMod : BaseUnityPlugin { 
     public static string ModId = "com.shadow.quantum";
     public static string ModName = "Quantum";
-    public static string ModVersion = "0.0.1";
+    public static string ModVersion = "0.0.3";
     private static string LocationFile = Assembly.GetExecutingAssembly().Location;
     private static string LocationDirectory = Path.GetDirectoryName(LocationFile);
     void Awake()
@@ -36,7 +36,7 @@ public class PatchLoader
     [HarmonyPatch(typeof(KSP2Mod))]
     [HarmonyPatch("Load")]
     [HarmonyPostfix]
-    public static bool KSP2Mod_Load(KSP2Mod __instance, ref bool __result)
+    public static void KSP2Mod_Load(KSP2Mod __instance, ref bool __result)
     {
         __result = true;
         if (__instance.EntryPoint.EndsWith(".dll"))
@@ -47,19 +47,19 @@ public class PatchLoader
         {
             __instance.GetType().GetField("currentState", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, KSP2ModState.Error);
             __result = false;
-            return false;
+            return;
         }
         if (__instance.APIVersion > KSP2ModManager.CurrentAPISupported)
         {
             __instance.GetType().GetField("currentState", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, KSP2ModState.Error);
             __result = false;
-            return false;
+            return;
         }
         if (GameManager.Instance.Game.KSP2ModManager.InvalidAPIs.Contains(__instance.APIVersion))
         {
             __instance.GetType().GetField("currentState", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, KSP2ModState.Error);
             __result = false;
-            return false;
+            return;
         }
         switch ((KSP2ModType)__instance.GetType().GetField("modType", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
         {
@@ -74,14 +74,14 @@ public class PatchLoader
                         ModObject.AddComponent(mctype);
                     }
                 }
-                ModObject.transform.parent = GameManager.Instance.Game.transform;
+                ModObject.transform.parent = GameObject.Find("GameManager/Default Game Instance(Clone)/Mods").transform;
                 break;
             default:
                 __instance.GetType().GetField("currentState", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, KSP2ModState.Error);
                 __result = false;
-                return false;
+                return;
         }
         __instance.GetType().GetField("currentState", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, KSP2ModState.Active);
-        return false;
+        return;
     }
 }

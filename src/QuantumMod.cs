@@ -18,16 +18,16 @@ public class QuantumMod : BaseUnityPlugin {
     {
         Harmony.CreateAndPatchAll(typeof(PatchLoader));
         Debug.Log("PatchLoader");
-        if (Directory.Exists(Path.GetFullPath($@"{LocationDirectory}\..\..\GameData"))){}
+        if (Directory.Exists(Path.GetFullPath($@"{LocationDirectory}\..\..\..\GameData"))){}
         else
         {
-            Directory.CreateDirectory(Path.GetFullPath($@"{LocationDirectory}\..\..\GameData"));
-            Directory.CreateDirectory(Path.GetFullPath($@"{LocationDirectory}\..\..\GameData\Mods"));
+            Directory.CreateDirectory(Path.GetFullPath($@"{LocationDirectory}\..\..\..\GameData"));
+            Directory.CreateDirectory(Path.GetFullPath($@"{LocationDirectory}\..\..\..\GameData\Mods"));
         }
-        if (Directory.Exists(Path.GetFullPath($@"{LocationDirectory}\..\..\GameData\Mods"))) { }
+        if (Directory.Exists(Path.GetFullPath($@"{LocationDirectory}\..\..\..\GameData\Mods"))) { }
         else
         {
-            Directory.CreateDirectory(Path.GetFullPath($@"{LocationDirectory}\..\..\GameData\Mods"));
+            Directory.CreateDirectory(Path.GetFullPath($@"{LocationDirectory}\..\..\..\GameData\Mods"));
         }
     }
 }
